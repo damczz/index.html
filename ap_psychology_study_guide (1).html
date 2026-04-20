@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; font-src 'none'; img-src 'none'; connect-src 'none';">
+<title>AP Psychology — Study Guide</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+body {
+  background: #0d0f14;
+  color: #ddd9d0;
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(180,150,90,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180,150,90,0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none; z-index: 0;
+}
+.page { max-width: 860px; margin: 0 auto; padding: 0 18px 80px; position: relative; z-index: 1; }
+.site-header { padding: 48px 0 32px; border-bottom: 1px solid rgba(255,255,255,0.07); margin-bottom: 32px; }
+.eyebrow {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  color: #b8924a; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content: ''; display: block; width: 26px; height: 1px; background: #b8924a; }
+h1 { font-size: clamp(28px,5vw,50px); font-weight: 700; line-height: 1.1; letter-spacing:-.02em; color: #f0ece2; margin-bottom: 10px; }
+h1 em { color: #c8a05c; font-style: normal; }
+.tagline { font-family: 'Courier New', Courier, monospace; font-size: 11px; color: #555045; letter-spacing: .04em; }
+.tab-nav { display: flex; margin-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.tab-btn {
+  font-family: 'Courier New', Courier, monospace; font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 10px 20px; border: none; background: transparent;
+  color: #555045; cursor: pointer; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; transition: color .2s, border-color .2s;
+}
+.tab-btn:hover { color: #c8a05c; }
+.tab-btn.active { color: #c8a05c; border-bottom-color: #c8a05c; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Score */
+.score-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 22px; }
+.metric { background: #141720; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 13px 14px; }
+.metric-lbl { font-family: 'Courier New', Courier, monospace; font-size: 10px; letter-spacing: .13em; text-transform: uppercase; color: #444038; margin-bottom: 5px; }
+.metric-val { font-size: 26px; font-weight: 700; color: #f0ece2; line-height: 1; }
+.metric-val.gold { color: #c8a05c; }
+.metric-val.green { color: #4caf82; }
+.metric-val.red { color: #e05c5c; }
+.progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.progress-track { flex: 1; height: 3px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 99px; width: 0%; background: linear-gradient(90deg,#b8924a,#e0bb7a); transition: width .5s; }
+.progress-pct { font-family: 'Courier New', Courier, monospace; font-size: 11px; color: #444038; white-space: nowrap; }
+.filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+.filter-btn {
+  font-family: 'Courier New', Courier, monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 5px 13px; border-radius: 99px; border: 1px solid rgba(255,255,255,0.1);
+  background: transparent; color: #555045; cursor: pointer; transition: all .18s;
+}
+.filter-btn:hover { border-color: #c8a05c; color: #c8a05c; }
+.filter-btn.active { background: #c8a05c; border-color: #c8a05c; color: #0d0f14; font-weight: bold; }
+
+/* Question card */
+.q-card { background: #141720; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 26px 26px 22px; animation: fadeup .28s ease; }
+@keyframes fadeup { from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;} }
+.q-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.unit-pill {
+  font-family: 'Courier New', Courier, monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 99px; background: rgba(200,160,92,0.12); color: #c8a05c; border: 1px solid rgba(200,160,92,0.3);
+}
+.q-num { font-family: 'Courier New', Courier, monospace; font-size: 10px; color: #333028; }
+.q-text { font-size: 16px; line-height: 1.6; color: #f0ece2; margin-bottom: 20px; }
+.options { display: flex; flex-direction: column; gap: 9px; }
+.opt {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 15px; background: #1a1d28;
+  border: 1px solid rgba(255,255,255,0.07); border-radius: 9px;
+  cursor: pointer; text-align: left; font-family: Georgia, serif;
+  font-size: 14px; color: #ddd9d0; line-height: 1.5;
+  transition: border-color .16s, background .16s, transform .1s;
+}
+.opt:hover:not(:disabled) { border-color: #c8a05c; background: rgba(200,160,92,0.06); transform: translateX(3px); }
+.opt:disabled { cursor: default; transform: none; }
+.opt-letter {
+  font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: bold;
+  width: 20px; height: 20px; min-width: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.06); color: #444038; margin-top: 2px; transition: all .2s;
+}
+.opt.correct { background: rgba(76,175,130,0.1); border-color: rgba(76,175,130,0.35); color: #4caf82; }
+.opt.correct .opt-letter { background: #4caf82; color: #000; }
+.opt.incorrect { background: rgba(224,92,92,0.1); border-color: rgba(224,92,92,0.35); color: #e05c5c; }
+.opt.incorrect .opt-letter { background: #e05c5c; color: #fff; }
+.opt.reveal { background: rgba(76,175,130,0.06); border-color: rgba(76,175,130,0.3); color: #4caf82; opacity: .65; }
+.opt.reveal .opt-letter { background: #4caf82; color: #000; }
+.hint-box {
+  margin-top: 13px; padding: 12px 15px;
+  background: rgba(200,160,92,0.08); border: 1px solid rgba(200,160,92,0.25);
+  border-radius: 8px; font-family: 'Courier New', Courier, monospace;
+  font-size: 12px; color: #c8a05c; line-height: 1.6; animation: fadein .2s ease;
+}
+.hint-box::before { content: '\25C8 HINT \2014 '; font-size: 10px; letter-spacing: .12em; opacity: .7; }
+.feedback {
+  margin-top: 16px; padding: 15px 17px; border-radius: 9px;
+  font-size: 13.5px; line-height: 1.65; animation: fadein .22s ease;
+}
+@keyframes fadein{from{opacity:0;}to{opacity:1;}}
+.feedback.correct { background: rgba(76,175,130,0.1); border: 1px solid rgba(76,175,130,0.3); color: #7dd8a8; }
+.feedback.incorrect { background: rgba(224,92,92,0.1); border: 1px solid rgba(224,92,92,0.3); color: #e08080; }
+.action-row { display: flex; gap: 9px; margin-top: 20px; flex-wrap: wrap; }
+.btn {
+  font-family: 'Courier New', Courier, monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  padding: 8px 18px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+  background: transparent; color: #555045; cursor: pointer; transition: all .17s;
+}
+.btn:hover { border-color: #ddd9d0; color: #ddd9d0; background: rgba(255,255,255,0.04); }
+.btn.primary { background: #c8a05c; border-color: #c8a05c; color: #0d0f14; font-weight: bold; }
+.btn.primary:hover { background: #e0bb7a; border-color: #e0bb7a; }
+.btn.danger { border-color: rgba(224,92,92,0.35); color: #e05c5c; }
+.btn.danger:hover { background: rgba(224,92,92,0.1); }
+.complete-card { text-align: center; padding: 52px 24px; }
+.complete-pct { font-size: 72px; font-weight: 700; color: #c8a05c; line-height: 1; }
+.complete-grade { font-family: 'Courier New', Courier, monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #555045; margin: 8px 0 6px; }
+.complete-msg { font-size: 14px; color: #666050; margin-bottom: 26px; }
+.complete-stats { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; flex-wrap: wrap; }
+.cstat-val { font-size: 28px; font-weight: 700; color: #f0ece2; }
+.cstat-lbl { font-family: 'Courier New', Courier, monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #444038; }
+
+/* Reference */
+.ref-intro { font-size: 12px; color: #555045; font-family: 'Courier New', Courier, monospace; margin-bottom: 18px; }
+.unit-select-row { display: flex; gap: 10px; align-items: center; margin-bottom: 22px; flex-wrap: wrap; }
+.unit-select-row label { font-family: 'Courier New', Courier, monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #555045; }
+.unit-dropdown {
+  font-family: 'Courier New', Courier, monospace; font-size: 12px;
+  padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+  background: #141720; color: #ddd9d0; cursor: pointer; outline: none;
+}
+.unit-dropdown:focus { border-color: #c8a05c; }
+.ref-card { background: #141720; border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; overflow: hidden; }
+.ref-unit-header { padding: 18px 22px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(200,160,92,0.04); }
+.ref-unit-title { font-size: 18px; font-weight: 700; color: #f0ece2; margin-bottom: 3px; }
+.ref-unit-sub { font-family: 'Courier New', Courier, monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #c8a05c; }
+.subunit { border-bottom: 1px solid rgba(255,255,255,0.05); }
+.subunit:last-child { border-bottom: none; }
+.subunit-toggle {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px; background: transparent; border: none; cursor: pointer; text-align: left; transition: background .17s;
+}
+.subunit-toggle:hover { background: rgba(255,255,255,0.03); }
+.subunit-title { font-family: 'Courier New', Courier, monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #c8a05c; }
+.subunit-arrow { font-size: 11px; color: #333028; transition: transform .2s; }
+.subunit-toggle.open .subunit-arrow { transform: rotate(90deg); }
+.subunit-content { display: none; padding: 0 22px 18px; }
+.subunit-content.open { display: block; }
+.content-section-label { font-family: 'Courier New', Courier, monospace; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: #333028; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.bullet-list { list-style: none; }
+.bullet-list li { font-size: 13px; color: #9a9590; line-height: 1.65; padding: 2px 0 2px 14px; position: relative; }
+.bullet-list li::before { content: '\2014'; position: absolute; left: 0; color: #333028; }
+.vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px,1fr)); gap: 9px; }
+.vocab-item { background: #1a1d28; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 13px; }
+.vocab-term { font-family: 'Courier New', Courier, monospace; font-size: 11px; font-weight: bold; color: #c8a05c; margin-bottom: 4px; }
+.vocab-def { font-size: 12px; color: #7a7570; line-height: 1.5; }
+.vocab-sec { padding: 18px 22px 22px; }
+
+/* Flashcards */
+.fc-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+.fc-controls label { font-family: 'Courier New', Courier, monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #555045; }
+.fc-info { font-family: 'Courier New', Courier, monospace; font-size: 11px; color: #333028; margin-left: auto; }
+.fc-stage { display: flex; justify-content: center; margin-bottom: 18px; }
+.fc-card-wrap { perspective: 900px; width: 100%; max-width: 560px; }
+.fc-card { width: 100%; min-height: 220px; position: relative; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.4,0,.2,1); cursor: pointer; }
+.fc-card.flipped { transform: rotateY(180deg); }
+.fc-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  background: #141720; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 28px 30px; text-align: center; min-height: 220px;
+}
+.fc-face.back { transform: rotateY(180deg); background: #121b12; border-color: rgba(76,175,130,0.2); }
+.fc-face-label { font-family: 'Courier New', Courier, monospace; font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: #333028; margin-bottom: 14px; }
+.fc-face.back .fc-face-label { color: rgba(76,175,130,0.4); }
+.fc-term { font-size: 20px; font-weight: 700; color: #f0ece2; line-height: 1.4; }
+.fc-def { font-size: 14px; color: #9a9590; line-height: 1.65; }
+.fc-hint-flip { font-family: 'Courier New', Courier, monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #282620; margin-top: 16px; }
+.fc-nav { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 10px; }
+.fc-dot-row { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; max-width: 520px; margin: 10px auto 0; }
+.fc-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.07); transition: background .25s; }
+.fc-dot.seen { background: #c8a05c; }
+.fc-dot.current { background: #f0ece2; }
+
+.site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px; margin-top: 44px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.site-footer p { font-family: 'Courier New', Courier, monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #282620; }
+
+@media(max-width:560px){
+  .score-grid{grid-template-columns:repeat(2,1fr);}
+  h1{font-size:26px;}
+  .q-text{font-size:14px;}
+  .complete-pct{font-size:52px;}
+  .q-card{padding:18px 16px 16px;}
+  .vocab-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="site-header">
+  <div class="eyebrow">College Board Curriculum</div>
+  <h1>AP <em>Psychology</em></h1>
+  <div class="tagline">5 UNITS &nbsp;·&nbsp; 25 SUBUNITS &nbsp;·&nbsp; 30 QUIZ QUESTIONS &nbsp;·&nbsp; 185+ VOCAB TERMS &nbsp;·&nbsp; FLASHCARD DECK</div>
+</header>
+
+<nav class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="quiz" role="tab" aria-selected="true">Quiz</button>
+  <button class="tab-btn" data-tab="reference" role="tab" aria-selected="false">Unit Reference</button>
+  <button class="tab-btn" data-tab="flashcards" role="tab" aria-selected="false">Flashcards</button>
+</nav>
+
+<!-- QUIZ -->
+<section id="panel-quiz" class="tab-panel active" role="tabpanel">
+  <div class="score-grid">
+    <div class="metric"><div class="metric-lbl">Score</div><div class="metric-val gold" id="scoreVal">0</div></div>
+    <div class="metric"><div class="metric-lbl">Correct</div><div class="metric-val green" id="correctVal">0</div></div>
+    <div class="metric"><div class="metric-lbl">Incorrect</div><div class="metric-val red" id="incorrectVal">0</div></div>
+    <div class="metric"><div class="metric-lbl">Progress</div><div class="metric-val" id="progressVal">0/0</div></div>
+  </div>
+  <div class="progress-row">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-pct" id="progressPct">0%</div>
+  </div>
+  <div class="filter-row" id="filterRow"></div>
+  <div id="quizArea"></div>
+</section>
+
+<!-- REFERENCE -->
+<section id="panel-reference" class="tab-panel" role="tabpanel">
+  <p class="ref-intro">Choose a unit from the dropdown. Expand any subunit to read its key content, then browse the full vocabulary grid below.</p>
+  <div class="unit-select-row">
+    <label for="unitDropdown">Jump to unit:</label>
+    <select class="unit-dropdown" id="unitDropdown"></select>
+  </div>
+  <div id="referenceArea"></div>
+</section>
+
+<!-- FLASHCARDS -->
+<section id="panel-flashcards" class="tab-panel" role="tabpanel">
+  <div class="fc-controls">
+    <label for="fcUnitDropdown">Unit:</label>
+    <select class="unit-dropdown" id="fcUnitDropdown"></select>
+    <div class="fc-info" id="fcInfo">Card 1 of 1</div>
+  </div>
+  <div class="fc-stage">
+    <div class="fc-card-wrap">
+      <div class="fc-card" id="fcCard" role="button" tabindex="0" aria-label="Flashcard, click to flip">
+        <div class="fc-face">
+          <div class="fc-face-label">Term</div>
+          <div class="fc-term" id="fcTerm">Loading…</div>
+          <div class="fc-hint-flip">Click to reveal definition</div>
+        </div>
+        <div class="fc-face back">
+          <div class="fc-face-label">Definition</div>
+          <div class="fc-def" id="fcDef"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fc-nav">
+    <button class="btn" id="fcPrev">&#8592; Prev</button>
+    <button class="btn primary" id="fcFlipBtn">Flip Card</button>
+    <button class="btn" id="fcNext">Next &#8594;</button>
+  </div>
+  <div class="fc-nav">
+    <button class="btn" id="fcShuffle">Shuffle Deck</button>
+    <button class="btn danger" id="fcReset">Reset Deck</button>
+  </div>
+  <div class="fc-dot-row" id="fcDots"></div>
+</section>
+
+<footer class="site-footer">
+  <p>AP Psychology &#8212; College Board Aligned</p>
+  <p>No data stored &nbsp;&#xB7;&nbsp; No network requests &nbsp;&#xB7;&nbsp; Offline-ready</p>
+</footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ══════════════════════════════════════════
+   CURRICULUM DATA
+══════════════════════════════════════════ */
+var CUR=[
+ {id:1,title:'Biological Bases of Behavior',
+  subs:[
+   {t:'1.1 Interaction of Heredity and Environment',b:['Heredity refers to traits passed down through genes from parents to offspring.','Environment includes all external influences such as family, culture, education, nutrition, stress, and experiences.','Most traits come from the interaction of heredity and environment rather than one alone.','A genotype is a person\'s genetic makeup; a phenotype is the observable expression of those genes.','Researchers study nature-nurture interaction through twin studies, adoption studies, and family studies.','Genes can influence the environments people seek out, and environments can influence whether genes are expressed.','Epigenetics refers to environmental influences that affect gene expression without changing DNA itself.','Key idea: Nature and nurture work together — they are not opposites.']},
+   {t:'1.2 Overview of the Nervous System',b:['The CNS includes the brain and spinal cord; the PNS connects the CNS to muscles, glands, and sensory organs.','The somatic nervous system controls voluntary movement and sensory information.','The autonomic nervous system controls involuntary functions such as heart rate and digestion.','The sympathetic nervous system prepares the body for action ("fight or flight").','The parasympathetic nervous system calms the body and conserves energy ("rest and digest").','Sensory neurons carry information to the brain; motor neurons carry commands from the CNS; interneurons connect neurons within the CNS.']},
+   {t:'1.3 The Neuron and Neural Firing',b:['Dendrites receive signals; the cell body contains the nucleus; the axon carries the impulse away from the cell body.','The myelin sheath speeds transmission; axon terminals release neurotransmitters into the synapse.','A resting potential is the inactive state; an action potential is the electrical signal that fires.','Neurons follow the all-or-none principle: they fire completely or not at all.','Neurotransmitters cross the synapse and bind to receptor sites; reuptake recycles them back into the sending neuron.','Key idea: Communication is electrical within the neuron and chemical between neurons.']},
+   {t:'1.4 The Brain',b:['Brainstem controls survival functions; medulla controls breathing/heartbeat; pons regulates sleep and arousal.','Reticular formation regulates alertness; cerebellum coordinates balance and fine motor movement.','Thalamus relays sensory info to cortex (except smell); hypothalamus regulates hunger, thirst, temperature, and hormones.','Amygdala processes fear and emotion; hippocampus forms new long-term memories; basal ganglia support habit learning.','Cerebral cortex: frontal lobes (planning, judgment, impulse control), parietal lobes (touch), temporal lobes (hearing/language), occipital lobes (vision).','Left hemisphere: language and analytical processing. Right hemisphere: spatial processing and holistic thinking. Corpus callosum connects the two.']},
+   {t:'1.5 Sleep',b:['Sleep is regulated by circadian rhythms (~24-hour cycles) and homeostatic sleep pressure.','NREM includes lighter sleep and slow-wave deep sleep; REM is associated with vivid dreaming and rapid eye movement.','Sleep supports memory consolidation, emotional regulation, physical restoration, and attention.','Lack of sleep impairs mood, reaction time, judgment, and learning.']},
+   {t:'1.6 Sensation',b:['Sensation is the detection of stimuli; perception is their interpretation.','Transduction converts physical energy (light, sound, pressure, chemicals) into neural signals.','The absolute threshold is the minimum stimulation needed to detect something.','Sensory adaptation occurs when receptors become less responsive to constant stimulation.']}
+  ],
+  vocab:[['Heredity','Traits passed from parents through genes.'],['Environment','Outside influences like family, culture, and experience.'],['Genotype','A person\'s genetic makeup.'],['Phenotype','The observable expression of genes.'],['Epigenetics','Environmental effects on gene expression without changing DNA.'],['CNS','Brain and spinal cord.'],['PNS','Nerves outside the central nervous system.'],['Somatic nervous system','Controls voluntary movement and sensory input.'],['Autonomic nervous system','Controls involuntary body functions.'],['Sympathetic nervous system','Prepares the body for action.'],['Parasympathetic nervous system','Calms the body and conserves energy.'],['Sensory neurons','Carry information to the brain and spinal cord.'],['Motor neurons','Carry commands from the CNS to the body.'],['Interneurons','Connect neurons within the CNS.'],['Neuron','A nerve cell that transmits information.'],['Dendrites','Receive signals from other neurons.'],['Cell body','Contains the nucleus and maintains the neuron.'],['Axon','Carries the electrical impulse away from the cell body.'],['Myelin sheath','Speeds transmission along the axon.'],['Action potential','The electrical signal that moves down the axon.'],['Reuptake','Neurotransmitters are taken back into the sending neuron.'],['Neurotransmitters','Chemical messengers between neurons.'],['All-or-none principle','Neurons fire completely or not at all.'],['Brainstem','Controls basic survival functions.'],['Medulla','Controls breathing, heartbeat, and blood pressure.'],['Pons','Regulates sleep and arousal.'],['Reticular formation','Helps regulate alertness and attention.'],['Cerebellum','Coordinates balance, posture, and movement.'],['Thalamus','Relays sensory information to the cortex.'],['Hypothalamus','Regulates hunger, thirst, temperature, and hormones.'],['Pituitary gland','Controls hormone release.'],['Limbic system','Supports emotion, motivation, and memory.'],['Amygdala','Processes fear and emotion.'],['Hippocampus','Helps form new long-term memories.'],['Basal ganglia','Help with movement and habit learning.'],['Cerebral cortex','Outer layer responsible for higher mental processes.'],['Frontal lobes','Planning, judgment, personality, movement.'],['Motor cortex','Controls voluntary movement.'],['Prefrontal cortex','Supports reasoning and impulse control.'],['Parietal lobes','Process touch and body position.'],['Sensory cortex','Receives body sensory information.'],['Temporal lobes','Process hearing, language, and memory.'],['Auditory cortex','Processes sound.'],['Occipital lobes','Process vision.'],['Visual cortex','Receives and interprets visual input.'],['Corpus callosum','Connects the two hemispheres.'],['Association areas','Integrate information from different brain regions.'],['Circadian rhythm','A 24-hour biological cycle.'],['NREM sleep','Non-REM sleep stages.'],['REM sleep','Sleep stage linked to vivid dreaming.'],['Sleep consolidation','Sleep helps store memories.'],['Sleep deprivation','Lack of sleep that affects mood and thinking.'],['Sensation','Detection of stimuli from the environment.'],['Perception','Interpretation of sensory information.'],['Transduction','Converting stimulus energy into neural signals.'],['Absolute threshold','Minimum stimulation needed to detect something.'],['Difference threshold','Minimum difference between two stimuli.'],['Sensory adaptation','Reduced response to constant stimulation.']]
+ },
+ {id:2,title:'Cognition',
+  subs:[
+   {t:'2.1 Perception',b:['Bottom-up processing starts with sensory input and builds upward; top-down processing uses prior knowledge and expectations.','Gestalt principles explain how people group sensory information (proximity, similarity, closure, continuity).','Figure-ground separates a main object from its background; perceptual constancy keeps objects stable in size, shape, and color.','Depth perception judges distance; visual illusions show perception is not always accurate.']},
+   {t:'2.2 Thinking, Problem-Solving, Judgments, and Decision-Making',b:['Algorithms are step-by-step methods that guarantee solutions; heuristics are faster shortcuts prone to error.','Insight is a sudden realization of a solution; functional fixedness is seeing objects only in their usual uses.','Confirmation bias: seeking evidence that supports existing beliefs.','Availability heuristic: judging likelihood by how easily examples come to mind.','Framing effects: wording/presentation of choices changes decisions. Overconfidence inflates accuracy estimates.']},
+   {t:'2.3 Introduction to Memory',b:['Memory involves encoding, storage, and retrieval of information.','Sensory memory is very brief; short-term/working memory holds limited information actively; long-term memory stores information long-term.','Declarative (explicit) memory = facts and events; procedural (implicit) memory = skills and habits.','Memory is reconstructive — rebuilt each time, not replayed exactly.']},
+   {t:'2.4 Encoding Memories',b:['Maintenance rehearsal repeats without meaning; elaborative rehearsal links new info to existing knowledge (deeper encoding).','Levels-of-processing theory: deeper, more meaningful processing leads to better memory.','Semantic encoding (meaning), visual encoding (images), and acoustic encoding (sounds) all aid storage.','Mnemonics improve encoding; chunking groups pieces into larger units.']},
+   {t:'2.5 Storing Memories',b:['The hippocampus helps form new explicit memories; consolidation stabilizes memories after learning.','Schema organize knowledge into mental frameworks; long-term potentiation (LTP) strengthens synaptic connections.','Memories are distributed across neural networks, not stored in one spot.']},
+   {t:'2.6 Retrieving Memories',b:['Recall requires producing information; recognition identifies presented information; relearning is faster the second time.','Retrieval cues trigger stored memories; context-dependent memory improves when environment matches learning.','State-dependent memory improves when internal state matches learning; priming is prior exposure influencing later responses.']},
+   {t:'2.7 Forgetting and Other Memory Challenges',b:['Proactive interference: old information disrupts new learning. Retroactive interference: new information disrupts old.','Misinformation effect: post-event misleading info can alter memory (Loftus).','Source amnesia: remembering info but forgetting where it came from. False memories: events that never happened.','Decay: memory traces weaken over time.']},
+   {t:'2.8 Intelligence and Achievement',b:['Fluid intelligence = reasoning in new situations; crystallized intelligence = accumulated knowledge.','IQ tests estimate intellectual performance but do not capture all abilities.','Reliability = consistent results; validity = measures what it intends to measure.','Intelligence is influenced by both genes and environment; cultural background can affect test performance.']}
+  ],
+  vocab:[['Perception','The process of organizing and interpreting sensory information.'],['Bottom-up processing','Analysis that starts with sensory input and builds upward.'],['Top-down processing','Interpretation guided by prior knowledge, expectations, and context.'],['Figure-ground','Separating an object from its background.'],['Grouping','Organizing stimuli into meaningful patterns.'],['Depth perception','Judging distance in three dimensions.'],['Color constancy','Seeing familiar objects as the same color despite lighting changes.'],['Inattentional blindness','Missing visible objects when attention is elsewhere.'],['Change blindness','Failing to notice changes in a scene.'],['Thinking','Mental activity involved in concepts, reasoning, and decisions.'],['Concept','A mental category of similar objects, events, or ideas.'],['Algorithm','A step-by-step method that guarantees a solution.'],['Heuristic','A quick mental shortcut that is faster but more error-prone.'],['Insight','A sudden realization of a solution.'],['Confirmation bias','Looking for information that supports what you already believe.'],['Availability heuristic','Judging likelihood by how easily examples come to mind.'],['Framing','The way a problem or choice is presented.'],['Functional fixedness','Seeing objects only in their usual uses.'],['Memory','The system for encoding, storing, and retrieving information.'],['Encoding','Transforming information into a form that can be stored.'],['Sensory memory','Brief retention of sensory information.'],['Short-term memory','Limited storage for a short period.'],['Working memory','Active processing of information in consciousness.'],['Long-term memory','Relatively permanent storage of information.'],['Explicit memory','Conscious memory of facts and events.'],['Implicit memory','Memory without conscious recall.'],['Rehearsal','Repetition of information to help store it.'],['Maintenance rehearsal','Repeating information without adding meaning.'],['Elaborative rehearsal','Connecting new information to what you already know.'],['Semantic encoding','Encoding based on meaning.'],['Visual encoding','Encoding images.'],['Acoustic encoding','Encoding sounds.'],['Mnemonic','Memory aid that helps organize and remember information.'],['Chunking','Grouping pieces of information into larger units.'],['Automatic processing','Unconscious encoding of familiar information.'],['Effortful processing','Encoding that requires attention and conscious effort.'],['Storage','Keeping encoded information over time.'],['Consolidation','Strengthening memories after learning.'],['Schema','Mental framework that organizes knowledge.'],['Long-term potentiation','Strengthening of synaptic connections after repeated activation.'],['Retrieval','Getting information back out of memory.'],['Recall','Retrieving information without cues.'],['Recognition','Identifying information that has been learned before.'],['Relearning','Learning information again faster the second time.'],['Retrieval cues','Hints that help trigger a memory.'],['Context-dependent memory','Better recall when the environment matches learning.'],['State-dependent memory','Better recall when internal state matches learning.'],['Priming','Earlier exposure affects later responses.'],['Forgetting','Loss or distortion of stored information.'],['Proactive interference','Old information disrupts new learning.'],['Retroactive interference','New information disrupts old learning.'],['Decay','Fading of memory traces over time.'],['Source amnesia','Forgetting where a memory came from.'],['Misinformation effect','Memory changes because of misleading information.'],['False memory','Remembering something that did not happen or happened differently.'],['Intelligence','Ability to learn, reason, solve problems, and adapt.'],['Achievement','Learned knowledge and performance.'],['IQ','Score that reflects performance on an intelligence test.'],['Reliability','Consistency of a test.'],['Validity','Whether a test measures what it should.'],['Fluid intelligence','Reasoning in new situations.'],['Crystallized intelligence','Learned knowledge and verbal skills.']]
+ },
+ {id:3,title:'Development and Learning',
+  subs:[
+   {t:'3.1 Themes and Methods in Developmental Psychology',b:['Developmental psychology studies physical, cognitive, and social change across the lifespan.','Longitudinal studies follow the same people over time; cross-sectional studies compare different ages at one point; sequential studies combine both.','Maturation refers to biological growth processes that shape development.']},
+   {t:'3.2 Physical Development Across the Lifespan',b:['Teratogens are harmful agents that affect prenatal development; puberty is the period of sexual maturation.','Brain plasticity is the brain\'s ability to change with experience.','The prefrontal cortex continues developing into early adulthood, affecting judgment and impulse control.']},
+   {t:'3.3 Gender and Sexual Orientation',b:['Gender involves biologically and socially influenced characteristics; gender identity is one\'s internal sense of self.','Gender role = expected behaviors; gender schema = mental framework for gender-related information.','Sexual orientation is an enduring attraction and is distinct from gender identity.']},
+   {t:'3.4 Cognitive Development Across the Lifespan',b:['Piaget\'s stages: sensorimotor (object permanence), preoperational (symbolic thought), concrete operational (conservation), formal operational (abstract reasoning).','Assimilation = fitting new experiences into existing schemas; accommodation = changing schemas.','Vygotsky: scaffolding provides support; the zone of proximal development (ZPD) = tasks doable with help but not alone.']},
+   {t:'3.5 Communication and Language Development',b:['Language milestones: babbling → one-word → two-word → telegraphic speech.','Phoneme = smallest unit of sound; morpheme = smallest unit of meaning; grammar = structural rules.']},
+   {t:'3.6 Social-Emotional Development Across the Lifespan',b:['Attachment is an emotional bond with a caregiver; secure attachment is marked by trust.','Stranger anxiety = fear of unfamiliar people.','Erikson\'s psychosocial stages span the lifespan; key adult conflicts: identity, intimacy, generativity.']},
+   {t:'3.7 Classical Conditioning',b:['Classical conditioning (Pavlov) = learning through association.','UCS naturally triggers a response; UCR is the natural response; CS is a once-neutral stimulus; CR is the learned response.','Acquisition = initial learning; extinction = weakening; generalization = similar stimuli trigger response; discrimination = telling CSs apart.']},
+   {t:'3.8 Operant Conditioning',b:['Operant conditioning (Skinner) = learning through consequences.','Positive reinforcement adds something desirable; negative reinforcement removes something unpleasant — both increase behavior.','Punishment decreases behavior; shaping reinforces successive approximations.','Schedules: fixed-ratio, fixed-interval, variable-ratio, variable-interval produce different response patterns.']},
+   {t:'3.9 Social, Cognitive, and Neurological Factors in Learning',b:['Observational learning (Bandura) = learning by watching others; Bobo doll experiments demonstrated children imitate aggression.','Modeling = imitating behavior; social learning theory emphasizes observation, imitation, and consequences.','Self-efficacy = belief in one\'s ability to succeed; mirror neurons fire when performing or watching actions.']}
+  ],
+  vocab:[['Developmental psychology','Study of physical, cognitive, and social change across the lifespan.'],['Longitudinal study','Follows the same people over time.'],['Cross-sectional study','Compares people of different ages at one time.'],['Sequential study','Combines longitudinal and cross-sectional methods.'],['Maturation','Biological growth processes that shape development.'],['Physical development','Changes in the body and brain over time.'],['Prenatal development','Development before birth.'],['Teratogens','Harmful agents that can affect prenatal development.'],['Puberty','Period of sexual maturation.'],['Brain plasticity','The brain\'s ability to change with experience.'],['Prefrontal cortex development','Continues into early adulthood; affects judgment and impulse control.'],['Gender','Biologically and socially influenced characteristics used to define male and female.'],['Gender identity','One\'s internal sense of being male, female, both, or neither.'],['Gender role','Expected behaviors associated with gender.'],['Sexual orientation','Enduring attraction toward one\'s own sex, another sex, or both.'],['Gender schema','Mental framework for understanding gender-related information.'],['Cognitive development','Changes in thinking, reasoning, and problem solving.'],['Assimilation','Fitting new experiences into existing schemas.'],['Accommodation','Changing schemas to fit new experiences.'],['Conservation','Understanding that quantity stays the same despite changes in shape.'],['Object permanence','Awareness that objects still exist when out of sight.'],['Scaffolding','Support that helps a learner succeed.'],['Zone of proximal development','Tasks a learner can do with help but not alone.'],['Language development','How children learn to understand and produce language.'],['Babbling','Early speech stage using repeated sounds.'],['One-word stage','Child uses single words to communicate.'],['Two-word stage','Child begins combining words.'],['Telegraphic speech','Short speech that leaves out smaller words.'],['Grammar','Rules for how language is structured.'],['Phoneme','Smallest unit of sound.'],['Morpheme','Smallest unit of meaning.'],['Attachment','Emotional bond with a caregiver.'],['Secure attachment','Attachment marked by trust and comfort with the caregiver.'],['Stranger anxiety','Fear of unfamiliar people.'],['Erikson\'s stages','Psychosocial stages of development across the lifespan.'],['Identity','Sense of self.'],['Intimacy','Ability to form close relationships.'],['Generativity','Concern for guiding the next generation.'],['Classical conditioning','Learning through association.'],['Unconditioned stimulus','Stimulus that naturally triggers a response.'],['Unconditioned response','Natural response to an unconditioned stimulus.'],['Conditioned stimulus','Once-neutral stimulus that now triggers a response.'],['Conditioned response','Learned response to a conditioned stimulus.'],['Acquisition','Initial learning phase.'],['Extinction','Weakening of a conditioned response.'],['Generalization','Similar stimuli trigger the learned response.'],['Discrimination','Ability to tell conditioned stimuli apart.'],['Operant conditioning','Learning through consequences.'],['Reinforcement','Anything that increases behavior.'],['Positive reinforcement','Adding something desirable to increase behavior.'],['Negative reinforcement','Removing something unpleasant to increase behavior.'],['Punishment','Anything that decreases behavior.'],['Shaping','Reinforcing closer and closer approximations of a behavior.'],['Continuous reinforcement','Reinforcing a response every time it occurs.'],['Fixed-ratio schedule','Reinforcement after a set number of responses.'],['Fixed-interval schedule','Reinforcement after a set amount of time.'],['Observational learning','Learning by watching others.'],['Modeling','Imitating a specific behavior.'],['Social learning theory','Learning through observation, imitation, and consequences.'],['Self-efficacy','Belief in one\'s ability to succeed.'],['Mirror neurons','Brain cells that fire when performing or watching actions.']]
+ },
+ {id:4,title:'Social Psychology and Personality',
+  subs:[
+   {t:'4.1 Attribution Theory and Person Perception',b:['Attribution theory explains behavior by looking at situation or disposition.','Internal attribution = based on personality; external attribution = based on situation.','Fundamental attribution error: overestimating traits and underestimating situation in others.','Self-serving bias: taking credit for success and blaming failure on outside causes.']},
+   {t:'4.2 Attitude Formation and Attitude Change',b:['An attitude involves feelings and beliefs that shape behavior.','Cognitive dissonance = discomfort from conflicting thoughts or behaviors, resolved by changing attitudes.','Central route persuasion: change through strong arguments. Peripheral route: change through superficial cues.']},
+   {t:'4.3 Psychology of Social Situations',b:['Conformity = adjusting to group norms (Asch); obedience = following authority (Milgram — ~65% went to max voltage).','Social facilitation: improved performance on simple tasks with observers present.','Social loafing: less effort in a group; deindividuation: reduced self-awareness in crowds.','Group polarization: groups become more extreme; groupthink: bad decisions from desire for agreement.','Bystander effect: less likely to help when others present (diffusion of responsibility).']},
+   {t:'4.4 Psychodynamic and Humanistic Theories of Personality',b:['Freud: behavior is shaped by unconscious drives. Id = desires; ego = rational mediator; superego = moral standards.','Defense mechanisms (unconscious anxiety reducers): projection, displacement, rationalization, reaction formation, regression, sublimation, denial.','Humanistic (Maslow, Rogers): emphasizes growth, free will, self-actualization.','Unconditional positive regard = acceptance without judgment.']},
+   {t:'4.5 Social-Cognitive and Trait Theories of Personality',b:['Big Five (OCEAN): openness, conscientiousness, extraversion, agreeableness, neuroticism.','Social-cognitive perspective: behavior influenced by thoughts, behavior, and environment (Bandura).','Reciprocal determinism: person, behavior, and environment influence one another.','Locus of control: internal (outcomes controlled by self) vs. external (controlled by outside forces).']},
+   {t:'4.6 Motivation',b:['Drive-reduction theory: physiological needs create drives to restore balance.','Maslow\'s hierarchy: physiological → safety → love/belonging → esteem → self-actualization.','Intrinsic motivation = doing something for its own sake; extrinsic = for external reward.']},
+   {t:'4.7 Emotion',b:['James-Lange theory: physiology first, then emotion (we feel afraid because we run).','Cannon-Bard theory: emotion and arousal occur simultaneously and independently.','Two-factor theory (Schachter-Singer): arousal + cognitive label = emotion.','Facial feedback hypothesis: facial expressions can influence emotional experience.','Emotional intelligence = ability to understand and manage emotions.']}
+  ],
+  vocab:[['Attribution theory','Explains behavior by looking at situation or disposition.'],['Internal attribution','Explanation based on personality or traits.'],['External attribution','Explanation based on situation.'],['Fundamental attribution error','Overestimating traits and underestimating situation in others.'],['Self-serving bias','Taking credit for success and blaming failure on outside causes.'],['Attitude','Feelings and beliefs that shape how a person responds.'],['Cognitive dissonance','Discomfort from conflicting thoughts or behaviors.'],['Central route persuasion','Attitude change through strong arguments.'],['Peripheral route persuasion','Attitude change through superficial cues.'],['Conformity','Adjusting to group norms.'],['Obedience','Following authority commands.'],['Social facilitation','Improved performance on simple tasks with others present.'],['Social loafing','Less effort in a group.'],['Deindividuation','Reduced self-awareness in group situations.'],['Group polarization','Groups become more extreme after discussion.'],['Groupthink','Poor decision-making caused by desire for agreement.'],['Bystander effect','Less likely to help when others are present.'],['Psychodynamic psychology','Behavior shaped by unconscious drives and conflicts.'],['Id','Unconscious desires and drives.'],['Ego','Rational part that balances id, superego, and reality.'],['Superego','Internalized moral standards.'],['Defense mechanisms','Unconscious strategies that reduce anxiety.'],['Projection','Placing your own feelings onto others.'],['Displacement','Shifting feelings to a safer target.'],['Rationalization','Making excuses to justify behavior.'],['Reaction formation','Acting the opposite of true feelings.'],['Regression','Returning to earlier behavior under stress.'],['Sublimation','Channeling impulses into acceptable activities.'],['Denial','Refusing to accept painful reality.'],['Humanistic psychology','Emphasizes growth and free will.'],['Self-actualization','Reaching one\'s full potential.'],['Unconditional positive regard','Acceptance without judgment.'],['Trait','A stable characteristic pattern of behavior.'],['Personality','Characteristic pattern of thinking, feeling, and acting.'],['Trait theory','Personality can be described using stable traits.'],['Big Five','Openness, conscientiousness, extraversion, agreeableness, neuroticism.'],['Social-cognitive perspective','Behavior is influenced by thoughts, behavior, and environment.'],['Reciprocal determinism','Person, behavior, and environment influence one another.'],['Locus of control','Belief about whether outcomes are controlled internally or externally.'],['Motivation','A need or desire that energizes behavior.'],['Drive-reduction theory','Physiological needs create drives to reduce tension.'],['Hierarchy of needs','Maslow\'s levels of human needs.'],['Intrinsic motivation','Doing something for its own sake.'],['Extrinsic motivation','Doing something for external reward.'],['Emotion','Response involving arousal, expression, and conscious feeling.'],['James-Lange theory','Emotion follows bodily arousal.'],['Cannon-Bard theory','Emotion and arousal happen at the same time.'],['Two-factor theory','Emotion depends on arousal and labeling.'],['Facial feedback','Facial expressions can influence emotion.'],['Emotional intelligence','Ability to understand and manage emotions.']]
+ },
+ {id:5,title:'Mental and Physical Health',
+  subs:[
+   {t:'5.1 Introduction to Health Psychology',b:['Health psychology examines how thoughts, feelings, and behavior affect physical health.','Stress is a response to threatening or challenging events.','The biopsychosocial model: health is influenced by biological, psychological, and social factors together.']},
+   {t:'5.2 Positive Psychology',b:['Positive psychology studies strengths, resilience, and well-being (Seligman).','Resilience = ability to recover from adversity; optimism = expectation of good outcomes; gratitude = appreciation for positives.']},
+   {t:'5.3 Explaining and Classifying Psychological Disorders',b:['A psychological disorder = a pattern of thoughts, feelings, or behaviors causing distress or dysfunction.','The DSM is the diagnostic manual; reliability = consistency; validity = accuracy of diagnosis.','Stigma = negative attitudes toward people with disorders.']},
+   {t:'5.4 Selected Categories of Psychological Disorders',b:['Anxiety disorders: excessive fear or worry.','Depressive disorders: persistent sadness and low mood; bipolar disorders: alternating depression and mania.','Schizophrenia spectrum: distorted thinking and perception (hallucinations, delusions).','OCD-related disorders: obsessions + compulsions. Trauma-related disorders (e.g. PTSD): linked to traumatic events.','Personality disorders: long-lasting patterns that impair functioning.']},
+   {t:'5.5 Treatment of Psychological Disorders',b:['Psychodynamic therapy: explores unconscious conflict.','Humanistic therapy (client-centered): emphasizes empathy, unconditional positive regard, and self-understanding.','Cognitive-behavioral therapy (CBT): changes dysfunctional thoughts and maladaptive behaviors — most empirically supported.','Biomedical therapy: medication (e.g. SSRIs for depression) or medical procedures (e.g. ECT).','Evidence-based practice: treatment supported by research and adapted with clinical skill.']}
+  ],
+  vocab:[['Health psychology','How thoughts, feelings, and behavior affect health.'],['Stress','Response to threatening or challenging events.'],['Biopsychosocial model','Health is influenced by biological, psychological, and social factors.'],['Positive psychology','Study of strengths, resilience, and well-being.'],['Resilience','Ability to recover from stress or adversity.'],['Optimism','Expectation that good outcomes are possible.'],['Gratitude','Appreciation for positive aspects of life.'],['Psychological disorder','Pattern of thoughts, feelings, or behaviors that causes distress or dysfunction.'],['DSM','Diagnostic manual used to classify disorders.'],['Reliability (diagnosis)','Consistency in diagnosis.'],['Validity (diagnosis)','Accuracy of diagnosis.'],['Stigma','Negative attitudes toward people with disorders.'],['Anxiety disorders','Disorders involving excessive fear or worry.'],['Depressive disorders','Disorders involving persistent sadness and low mood.'],['Bipolar disorders','Disorders involving depression and mania.'],['Schizophrenia spectrum disorders','Disorders involving distorted thinking and perception.'],['OCD-related disorders','Disorders involving obsessions and compulsions.'],['Trauma-related disorders','Disorders linked to traumatic events.'],['Personality disorders','Long-lasting patterns that impair functioning.'],['Psychotherapy','Treatment using psychological methods.'],['Psychodynamic therapy','Explores unconscious conflict.'],['Humanistic therapy','Emphasizes empathy and self-understanding.'],['Cognitive-behavioral therapy (CBT)','Changes thoughts and behaviors.'],['Biomedical therapy','Uses medication or medical procedures.'],['Evidence-based practice','Treatment based on research evidence and clinical skill.']]
+ }
+];
+
+/* ══════════════════════════════════════════
+   QUIZ QUESTIONS
+══════════════════════════════════════════ */
+var QS=[
+ {u:1,q:'Which part of the neuron receives incoming signals from other neurons?',o:['Axon terminal','Myelin sheath','Dendrite','Node of Ranvier'],a:2,hint:'Picture a tree — branching extensions that receive input.',ex:'From 1.3: Dendrites are the branching extensions that receive incoming signals. The path goes: dendrites → cell body → axon → terminal buttons → synapse. The name comes from the Greek word for "tree."',wx:'Dendrites receive signals. Axon terminals release neurotransmitters, myelin sheaths speed transmission, and nodes of Ranvier are gaps in the myelin.'},
+ {u:1,q:'The all-or-none principle states that a neuron:',o:['Fires at varying intensities based on stimulus strength','Either fires at full strength or does not fire at all','Fires only when multiple neurons stimulate it at once','Fires continuously during wakefulness'],a:1,hint:'Think of a light switch — no dimmer, just on or off.',ex:'From 1.3: The all-or-none principle means neurons fire completely or not at all. Stimulus intensity is encoded by firing frequency, not by changing the size of individual action potentials.',wx:'There is no partial action potential — the neuron fires fully or not at all. Intensity is communicated by how often the neuron fires, not how strongly.'},
+ {u:1,q:'Which brain structure relays sensory information to the cortex (except smell)?',o:['Hypothalamus','Thalamus','Hippocampus','Amygdala'],a:1,hint:'Nearly all sensory signals pass through this structure on their way to the cortex.',ex:'From 1.4: The thalamus relays sensory information to the cortex except smell. Olfaction bypasses the thalamus and connects directly to the olfactory cortex.',wx:'The thalamus is the sensory relay. The hypothalamus regulates hunger/thirst/temperature, the hippocampus forms long-term memories, and the amygdala processes fear and emotion.'},
+ {u:1,q:'The sympathetic nervous system primarily:',o:['Calms the body and conserves energy','Controls voluntary movement','Prepares the body for action (fight or flight)','Carries sensory signals to the spinal cord'],a:2,hint:'Think "fight or flight" — this branch activates the body under stress.',ex:'From 1.2: The sympathetic nervous system prepares the body for action. Its counterpart, the parasympathetic system, calms the body and conserves energy ("rest and digest"). The two branches usually balance each other.',wx:'The sympathetic branch activates the body for action. Calming/conserving is parasympathetic. Voluntary movement is controlled by the somatic nervous system.'},
+ {u:1,q:'Epigenetics refers to:',o:['Traits inherited directly through DNA sequences','Environmental effects on gene expression without changing DNA','The mapping of all human genes','Brain plasticity during adolescence'],a:1,hint:'"Epi-" means "upon" — changes that sit on top of the DNA without altering it.',ex:'From 1.1: Epigenetics refers to environmental effects on gene expression without changing the DNA itself. Stress, diet, and experiences can switch genes on or off, affecting phenotype without altering genotype.',wx:'Epigenetics is about environmental changes to gene expression, not changes to DNA sequences. Inherited traits via DNA describe heredity. Genome mapping is genomics. Brain plasticity is a separate concept.'},
+ {u:1,q:'REM sleep is associated with:',o:['Slow delta waves and deep physical restoration','Vivid dreaming and rapid eye movement','Light drowsiness and alpha waves','Release of growth hormone'],a:1,hint:'REM = Rapid Eye Movement — what happens to your eyes and brain during this stage?',ex:'From 1.5: REM sleep is associated with vivid dreaming and rapid eye movement. The brain is nearly as active as when awake, while the body experiences muscle atonia. REM cycles lengthen throughout the night.',wx:'REM = vivid dreaming and rapid eye movement. Slow delta waves and deep restoration = NREM Stage 3. Alpha waves occur during relaxed wakefulness. Growth hormone is released during deep NREM sleep.'},
+ {u:1,q:'Transduction in sensation refers to:',o:['The brain adapting to constant background stimuli','Converting physical stimulus energy into neural signals','Interpreting sensory input using prior knowledge','The minimum stimulus intensity needed for detection'],a:1,hint:'The key word is "convert" — changing one form of energy into another.',ex:'From 1.6: Transduction converts physical stimulus energy (light, sound, pressure, chemicals) into neural signals the brain can process. It is the first step that makes sensation possible.',wx:'Transduction = converting stimulus energy to neural signals. Adapting to constant stimuli = sensory adaptation. Interpreting with prior knowledge = top-down processing. Minimum stimulus = absolute threshold.'},
+
+ {u:2,q:'Top-down processing means:',o:['Building perception upward from raw sensory features','Using prior knowledge and expectations to interpret sensation','Processing stimuli that bypass conscious awareness','Automatically responding to highly familiar information'],a:1,hint:'Your brain "fills in the blanks" using what it already knows about the world.',ex:'From 2.1: Top-down processing uses prior knowledge, expectations, and context to interpret incoming sensory data. It explains why we can read words with missing letters and hear familiar songs even in noise.',wx:'Top-down uses existing knowledge to shape perception. Bottom-up does the opposite — building from raw sensory features. The other options describe subliminal processing and automatic processing.'},
+ {u:2,q:'Confirmation bias is the tendency to:',o:['Overestimate how accurately one could have predicted an outcome','Judge probability by how easily examples come to mind','Seek information that supports what you already believe','See objects only in their conventional, usual functions'],a:2,hint:'Imagine someone who only reads news that agrees with their existing political views.',ex:'From 2.2: Confirmation bias causes people to search for, interpret, and recall information in ways that confirm their preexisting beliefs. It is a major barrier to objective reasoning and scientific thinking.',wx:'Confirmation bias = seeking confirming evidence. Overestimating predictability = hindsight bias. Judging by ease of recall = availability heuristic. Seeing objects only conventionally = functional fixedness.'},
+ {u:2,q:'The misinformation effect shows that:',o:['Forgetting always means the memory was never properly encoded','Memories are exact video-like replays of past events','Memory can be altered by misleading information encountered after an event','Proactive interference disrupts new memory formation'],a:2,hint:'Elizabeth Loftus\'s eyewitness testimony research is the classic example.',ex:'From 2.7: The misinformation effect demonstrates that post-event misleading information can alter stored memories. Loftus\'s research showed that eyewitnesses incorporated false details into their accounts when exposed to leading questions.',wx:'The misinformation effect = post-event information alters memory. Forgetting without encoding = encoding failure. Exact replay = video-recording model (which is incorrect). Old disrupting new = proactive interference.'},
+ {u:2,q:'Elaborative rehearsal is more effective than maintenance rehearsal because it:',o:['Repeats information more times in the same time period','Links new information to existing knowledge for deeper encoding','Relies on acoustic rather than semantic encoding','Eliminates the need for retrieval cues during recall'],a:1,hint:'Deeper meaning creates stronger, more durable memory traces.',ex:'From 2.4: Elaborative rehearsal connects new information to existing knowledge, creating deeper and more meaningful encoding. The levels-of-processing theory supports this — semantic (meaningful) processing leads to better long-term retention.',wx:'Elaborative rehearsal works by creating meaningful connections, not by repeating more often. Maintenance rehearsal = rote repetition. Elaborative rehearsal uses semantic encoding, which is more effective than acoustic alone.'},
+ {u:2,q:'Proactive interference occurs when:',o:['New information disrupts recall of older information','Old information disrupts the learning or recall of new information','A memory is stored but temporarily cannot be accessed','Memories are distorted due to strong emotional arousal'],a:1,hint:'"Pro" means forward — old memories push forward to interfere with new ones.',ex:'From 2.7: Proactive interference = old information interferes with new learning. For example, knowing French makes it harder to learn Italian, because French words intrude on the Italian memory.',wx:'Proactive = old disrupts new. Retroactive = new disrupts old. Stored-but-inaccessible = retrieval failure (tip-of-the-tongue). Emotional distortion is not proactive interference.'},
+
+ {u:3,q:'In classical conditioning, the conditioned stimulus (CS) is:',o:['The stimulus that naturally triggers a response without training','A neutral stimulus that acquires the ability to elicit a response after pairing with the UCS','The natural, unlearned response to the UCS','The learned response that mirrors the unconditioned response'],a:1,hint:'Pavlov\'s bell started neutral — it became meaningful only through pairing with food.',ex:'From 3.7: The CS begins as a neutral stimulus with no innate response, but acquires the ability to produce a conditioned response after being repeatedly paired with the unconditioned stimulus (UCS). Pavlov\'s bell is the canonical example.',wx:'The CS starts neutral and gains meaning through pairing. The UCS naturally produces a response. The UCR is the natural, unlearned response. The CR is the learned response that resembles the UCR.'},
+ {u:3,q:'Negative reinforcement differs from punishment in that negative reinforcement:',o:['Adds an unpleasant stimulus to reduce a behavior','Removes an unpleasant stimulus and thereby increases behavior','Decreases behavior by withdrawing a positive stimulus','Involves observing the consequences experienced by others'],a:1,hint:'"Reinforcement" ALWAYS increases behavior. "Negative" means something is removed.',ex:'From 3.8: Negative reinforcement removes something unpleasant to increase behavior. Taking aspirin removes a headache, increasing the likelihood of taking aspirin again. "Negative" means subtraction, not bad — it is still reinforcement.',wx:'Negative reinforcement INCREASES behavior by REMOVING an aversive stimulus. Punishment decreases behavior. Adding something unpleasant = positive punishment. Removing something pleasant = negative punishment.'},
+ {u:3,q:'Bandura\'s observational learning theory emphasizes that behavior can be learned:',o:['Only through direct reinforcement and punishment','By watching others, without requiring direct reinforcement','Exclusively through classical conditioning','Only when the model is a parent or authority figure'],a:1,hint:'The Bobo doll studies showed children imitated aggression just from watching — no rewards were given to the children.',ex:'From 3.9: Observational (social) learning states people can learn by watching others. Bandura\'s Bobo doll experiments showed children imitated an adult model\'s aggressive behavior without receiving any direct reinforcement.',wx:'Observational learning occurs through watching others without direct reinforcement. The Bobo doll studies were the key evidence. This challenged strict behaviorism\'s claim that only direct reward/punishment produces learning.'},
+ {u:3,q:'The zone of proximal development (ZPD) refers to:',o:['The range of IQ scores considered statistically normal','Tasks a learner can accomplish with guidance but not independently','The developmental period of most rapid physical growth','The gap between short-term and long-term memory capacity'],a:1,hint:'Vygotsky — the space between what you can do alone and what you can do with support.',ex:'From 3.4: The ZPD (Vygotsky) is the range of tasks a learner can do with guidance but not yet independently. Scaffolding provides support within the ZPD until the learner can function alone.',wx:'The ZPD = tasks learnable with support but not alone (Vygotsky). It is not about IQ ranges, physical growth spurts, or differences between memory types.'},
+ {u:3,q:'Piaget\'s concrete operational stage is marked by the acquisition of:',o:['Object permanence and imitation','Abstract and hypothetical reasoning','Conservation and logical thinking about concrete objects','Language and symbolic/pretend play'],a:2,hint:'Children this age can understand that reshaping clay doesn\'t change the amount.',ex:'From 3.4: Conservation — understanding that quantity stays the same despite changes in shape or appearance — is the hallmark of Piaget\'s concrete operational stage (ages ~7–11). Children also develop logical operations on tangible objects.',wx:'Conservation and concrete logic define the concrete operational stage. Object permanence = sensorimotor. Abstract/hypothetical reasoning = formal operational. Language and symbolic play = preoperational.'},
+
+ {u:4,q:'The fundamental attribution error is the tendency to:',o:['Attribute our own failures to situational factors','Overestimate dispositional and underestimate situational causes of others\' behavior','Assume that other people share our beliefs and opinions','Take credit for success but blame the situation for failure'],a:1,hint:'We judge others by who they ARE, ignoring the situation they\'re in.',ex:'From 4.1: The fundamental attribution error (FAE) is the tendency to overemphasize dispositional (character) factors and underestimate situational factors when explaining others\' behavior. It is one of the most replicated findings in social psychology.',wx:'FAE = over-attributing others\' behavior to character. Attributing own failures to situations = self-serving bias. Assuming shared views = false consensus effect. Taking credit/blaming situations = also self-serving bias.'},
+ {u:4,q:'Cognitive dissonance occurs when:',o:['Two social groups have incompatible norms','A person experiences discomfort from conflicting thoughts or behaviors','Someone misattributes the source of their physiological arousal','Attention is redirected away from a source of anxiety'],a:1,hint:'Festinger — the mental discomfort when your actions contradict your beliefs.',ex:'From 4.2: Cognitive dissonance is the discomfort felt when a person holds conflicting thoughts or when actions conflict with attitudes. People typically reduce it by changing their attitudes to align with their behavior.',wx:'Cognitive dissonance = internal conflict between thoughts/behaviors. Conflicting group norms describe social conflict generally. Misattributing arousal relates to the Schachter-Singer emotion theory. Redirecting attention describes defense mechanisms.'},
+ {u:4,q:'In Freud\'s personality structure, the ego:',o:['Contains raw unconscious desires and drives','Acts as the internalized moral conscience','Mediates between the id, superego, and external reality','Represents childhood sexual energy directed outward'],a:2,hint:'The ego is the realistic, rational executive of the personality.',ex:'From 4.4: The ego is the rational part that operates on the reality principle, balancing the id\'s desires, the superego\'s moral standards, and the constraints of the real world. It is largely conscious.',wx:'The ego mediates between id, superego, and reality. The id contains unconscious desires. The superego is the moral conscience. Libido/sexual energy is a concept in Freudian theory, not a structural component.'},
+ {u:4,q:'The Big Five personality trait most associated with emotional instability and negative affect is:',o:['Openness','Conscientiousness','Extraversion','Neuroticism'],a:3,hint:'High scorers on this trait tend toward anxiety, moodiness, and emotional reactivity.',ex:'From 4.5: Neuroticism (the N in OCEAN) reflects the tendency to experience negative emotions, anxiety, depression, and emotional instability. The Big Five are: Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism.',wx:'Neuroticism = emotional instability and negative affect. Openness = curiosity and creativity. Conscientiousness = organization and discipline. Extraversion = sociability and positive emotionality.'},
+ {u:4,q:'The James-Lange theory of emotion states that:',o:['Emotion and physiological arousal occur simultaneously and independently','We experience emotion because we interpret our physiological arousal','Cognitive appraisal of undifferentiated arousal determines emotion','Emotions are directly caused by facial expressions'],a:1,hint:'We feel afraid because we run — not the other way around.',ex:'From 4.7: The James-Lange theory proposes that physiological arousal occurs first, and we then interpret that arousal as an emotion. Counter-intuitive: the bodily change precedes and causes the feeling.',wx:'James-Lange: physiology first, then emotion. Cannon-Bard: they occur simultaneously and independently. Two-factor (Schachter-Singer): arousal + cognitive label = emotion. Facial feedback is a separate hypothesis.'},
+
+ {u:5,q:'The biopsychosocial model of health holds that:',o:['Health is determined solely by genetics and biological factors','Physical and mental health are entirely separate domains','Health is influenced by biological, psychological, and social factors together','Positive thinking alone can prevent physical illness'],a:2,hint:'Three domains: body, mind, and social environment — all interacting.',ex:'From 5.1: The biopsychosocial model recognizes that health is shaped by a combination of biological (genetics, physiology), psychological (thoughts, emotions, behavior), and social (relationships, culture, socioeconomic status) factors.',wx:'The biopsychosocial model explicitly integrates all three domains. Biology alone = the older biomedical model. Separating health/mental health contradicts this integrated view. Positive thinking alone is an oversimplification.'},
+ {u:5,q:'Cognitive-behavioral therapy (CBT) primarily targets:',o:['Unconscious conflicts rooted in early childhood experiences','Dysfunctional thoughts and maladaptive behaviors in the present','Brain chemistry and neurotransmitter levels through medication','Interpersonal communication and relationship dynamics'],a:1,hint:'Both parts of the name — cognitive (thoughts) and behavioral (actions) — tell you exactly what is targeted.',ex:'From 5.5: CBT changes dysfunctional thought patterns (cognitive distortions) and maladaptive behaviors simultaneously. It is present-focused, structured, and the most empirically supported psychological treatment for many disorders.',wx:'CBT targets current dysfunctional thoughts and behaviors. Unconscious childhood conflicts = psychodynamic therapy. Medication = biomedical therapy. Interpersonal communication = interpersonal therapy.'},
+ {u:5,q:'According to the DSM, a psychological disorder is defined as:',o:['Any behavior that violates established social norms or laws','A pattern of thoughts, feelings, or behaviors causing distress or dysfunction','A chemical imbalance in the brain that requires medication to treat','Behavior that is statistically rare within a given population'],a:1,hint:'Two key criteria: the behavior must cause distress OR dysfunction in the person\'s life.',ex:'From 5.3: A psychological disorder is a pattern of thoughts, feelings, or behaviors that causes significant distress or dysfunction. The DSM classifies these disorders. Not all unusual behavior qualifies as a disorder.',wx:'A disorder requires distress or dysfunction, not just norm violation, a chemical imbalance, or statistical rarity. Social norms vary culturally; being a genius is rare but not a disorder.'},
+ {u:5,q:'Schizophrenia spectrum disorders are primarily characterized by:',o:['Alternating episodes of severe depression and mania','Persistent intrusive thoughts paired with repetitive behaviors','Distorted thinking and perception, including hallucinations and delusions','Excessive, unfocused anxiety about everyday situations'],a:2,hint:'Think "split from reality" — these disorders involve perceptions and beliefs that don\'t match the real world.',ex:'From 5.4: Schizophrenia spectrum disorders involve distorted thinking and perception, including positive symptoms (hallucinations, delusions, disorganized thinking) and negative symptoms (flat affect, reduced speech, social withdrawal).',wx:'Schizophrenia = distorted reality. Alternating depression/mania = bipolar disorder. Intrusive thoughts + compulsions = OCD-related disorder. Excessive unfocused anxiety = generalized anxiety disorder.'},
+ {u:5,q:'Resilience in positive psychology refers to:',o:['The expectation that positive outcomes are generally possible','The ability to recover from stress or adversity','Appreciation and thankfulness for positive aspects of life','Pursuing challenging goals to achieve one\'s full potential'],a:1,hint:'Like a rubber band — it stretches under pressure and bounces back.',ex:'From 5.2: Resilience is the ability to recover from stress or adversity. It is a central concept in positive psychology, which focuses on human strengths and well-being rather than only on pathology.',wx:'Resilience = recovering from adversity. Expecting good outcomes = optimism. Appreciating life\'s positives = gratitude. Pursuing full potential relates to self-actualization in Maslow\'s hierarchy.'}
+];
+
+/* ══════════════════════════════════════════
+   XSS-SAFE DOM HELPERS
+══════════════════════════════════════════ */
+function el(tag,cls){var e=document.createElement(tag);if(cls)e.className=cls;return e;}
+function tx(s){return document.createTextNode(String(s));}
+function st(e,s){e.textContent=String(s);}
+function clr(e){while(e.firstChild)e.removeChild(e.firstChild);}
+function app(p){for(var i=1;i<arguments.length;i++){if(arguments[i])p.appendChild(arguments[i]);}return p;}
+
+/* ══════════════════════════════════════════
+   QUIZ
+══════════════════════════════════════════ */
+var Q={unit:0,qs:[],cur:0,score:0,ok:0,bad:0,answered:false,hinted:false};
+
+function shuffle(a){var b=a.slice(),i,j,t;for(i=b.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=b[i];b[i]=b[j];b[j]=t;}return b;}
+
+function initQ(uid){
+  Q.qs=shuffle(uid===0?QS:QS.filter(function(q){return q.u===uid;}));
+  Q.cur=0;Q.score=0;Q.ok=0;Q.bad=0;Q.answered=false;Q.hinted=false;
+  updBar();drawQ();
+}
+
+function updBar(){
+  var tot=Q.qs.length,done=Q.ok+Q.bad,pct=tot?Math.round(done/tot*100):0;
+  st(document.getElementById('scoreVal'),Q.score);
+  st(document.getElementById('correctVal'),Q.ok);
+  st(document.getElementById('incorrectVal'),Q.bad);
+  st(document.getElementById('progressVal'),done+'/'+tot);
+  document.getElementById('progressFill').style.width=pct+'%';
+  st(document.getElementById('progressPct'),pct+'%');
+}
+
+function drawQ(){
+  var area=document.getElementById('quizArea');
+  clr(area);
+  if(Q.cur>=Q.qs.length){drawDone(area);return;}
+  var q=Q.qs[Q.cur],lets=['A','B','C','D'];
+  var card=el('div','q-card');
+
+  var meta=el('div','q-meta');
+  var pill=el('span','unit-pill');
+  var ud=CUR.filter(function(u){return u.id===q.u;})[0];
+  st(pill,'Unit '+q.u+' \u2014 '+ud.title);
+  var qn=el('span','q-num');st(qn,'Q'+(Q.cur+1)+' of '+Q.qs.length);
+  app(meta,pill,qn);app(card,meta);
+
+  var qt=el('p','q-text');st(qt,q.q);app(card,qt);
+
+  var ow=el('div','options'),obs=[];
+  q.o.forEach(function(ot,i){
+    var b=el('button','opt');
+    var ls=el('span','opt-letter');st(ls,lets[i]);
+    var lb=el('span');st(lb,ot);
+    app(b,ls,lb);
+    b.addEventListener('click',(function(idx){return function(){pick(idx,q,obs,ha,fa,ar);};})(i));
+    obs.push(b);app(ow,b);
+  });
+  app(card,ow);
+
+  var ha=el('div'),fa=el('div'),ar=el('div','action-row');
+
+  var hb=el('button','btn');st(hb,'Hint');
+  hb.addEventListener('click',function(){
+    if(Q.answered||Q.hinted)return;
+    Q.hinted=true;
+    var hbox=el('div','hint-box');st(hbox,q.hint+'  (+5 pts if correct)');
+    app(ha,hbox);hb.disabled=true;hb.style.opacity='.3';
+  });
+  var rb=el('button','btn danger');st(rb,'Reset');
+  rb.addEventListener('click',hardReset);
+  app(ar,hb,rb);
+  app(card,ha,fa,ar);
+  app(area,card);
+}
+
+function pick(idx,q,obs,ha,fa,ar){
+  if(Q.answered)return;
+  Q.answered=true;
+  var ok=idx===q.a;
+  if(ok){Q.ok++;Q.score+=Q.hinted?5:10;}else{Q.bad++;}
+  updBar();
+  obs.forEach(function(b,i){
+    b.disabled=true;
+    if(i===q.a)b.className='opt '+(ok&&i===idx?'correct':'reveal');
+    if(i===idx&&!ok)b.className='opt incorrect';
+  });
+  var fb=el('div','feedback '+(ok?'correct':'incorrect'));
+  if(ok){
+    var s1=el('strong');st(s1,'Correct! ');
+    app(fb,s1,tx(q.ex));
+  }else{
+    var s2=el('strong');st(s2,'Incorrect. ');
+    var s3=el('strong');st(s3,obs[q.a].querySelector('span:last-child').textContent);
+    app(fb,s2,tx('The correct answer is '),s3,tx('. '+q.wx));
+  }
+  app(fa,fb);
+  clr(ar);
+  var nx=el('button','btn primary');
+  st(nx,Q.cur+1<Q.qs.length?'Next Question \u2192':'See Results \u2192');
+  nx.addEventListener('click',function(){Q.cur++;Q.answered=false;Q.hinted=false;drawQ();});
+  var rb=el('button','btn danger');st(rb,'Reset');rb.addEventListener('click',hardReset);
+  app(ar,nx,rb);
+}
+
+function drawDone(area){
+  var tot=Q.qs.length,pct=tot?Math.round(Q.ok/tot*100):0;
+  var ap=pct>=90?5:pct>=75?4:pct>=60?3:pct>=45?2:1;
+  var ms=['Keep studying \u2014 review each explanation carefully.','Good start \u2014 focus on your weakest units.','Solid effort \u2014 target the units you missed.','Great work \u2014 almost exam-ready!','Outstanding \u2014 excellent preparation!'];
+  var card=el('div','q-card complete-card');
+  var pd=el('div','complete-pct');st(pd,pct+'%');
+  var gd=el('div','complete-grade');st(gd,'Estimated AP Score: '+ap+' / 5');
+  var md=el('div','complete-msg');st(md,ms[ap-1]);
+  var st2=el('div','complete-stats');
+  function cs(v,l){var d=el('div');var vd=el('div','cstat-val');st(vd,v);var ld=el('div','cstat-lbl');st(ld,l);app(d,vd,ld);return d;}
+  app(st2,cs(Q.ok,'Correct'),cs(Q.bad,'Incorrect'),cs(Q.score,'Points'),cs(tot,'Questions'));
+  var ar=el('div','action-row');ar.style.justifyContent='center';
+  var r1=el('button','btn primary');st(r1,'Retry this unit');r1.addEventListener('click',function(){initQ(Q.unit);});
+  var r2=el('button','btn danger');st(r2,'Reset all');r2.addEventListener('click',hardReset);
+  app(ar,r1,r2);
+  app(card,pd,gd,md,st2,ar);
+  app(area,card);
+}
+
+function hardReset(){
+  Q.unit=0;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.toggle('active',b.dataset.unit==='0');});
+  initQ(0);
+}
+
+function buildFilter(){
+  var row=document.getElementById('filterRow');
+  [{id:0,label:'All Units'}].concat(CUR.map(function(u){return{id:u.id,label:'Unit '+u.id};})).forEach(function(item){
+    var b=el('button','filter-btn'+(item.id===0?' active':''));
+    b.dataset.unit=String(item.id);
+    st(b,item.label);
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.filter-btn').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');Q.unit=item.id;initQ(item.id);
+    });
+    app(row,b);
+  });
+}
+
+/* ══════════════════════════════════════════
+   REFERENCE
+══════════════════════════════════════════ */
+function buildRef(){
+  var dd=document.getElementById('unitDropdown'),area=document.getElementById('referenceArea');
+  CUR.forEach(function(u,i){
+    var o=document.createElement('option');o.value=String(i);
+    st(o,'Unit '+u.id+': '+u.title);dd.appendChild(o);
+  });
+  dd.addEventListener('change',function(){drawRef(CUR[parseInt(dd.value,10)],area);});
+  drawRef(CUR[0],area);
+}
+
+function drawRef(unit,area){
+  clr(area);
+  var card=el('div','ref-card');
+  var hdr=el('div','ref-unit-header');
+  var ht=el('div','ref-unit-title');st(ht,'Unit '+unit.id+': '+unit.title);
+  var hs=el('div','ref-unit-sub');st(hs,unit.subs.length+' subunits \u00b7 '+unit.vocab.length+' vocabulary terms');
+  app(hdr,ht,hs);app(card,hdr);
+  var body=el('div');
+
+  unit.subs.forEach(function(sub){
+    var su=el('div','subunit');
+    var tog=el('button','subunit-toggle');
+    var ts=el('span','subunit-title');st(ts,sub.t);
+    var ar=el('span','subunit-arrow');st(ar,'\u25B6');
+    app(tog,ts,ar);
+    var con=el('div','subunit-content');
+    var lbl=el('div','content-section-label');st(lbl,'Key Content');
+    var ul=el('ul','bullet-list');
+    sub.b.forEach(function(b){var li=document.createElement('li');st(li,b);ul.appendChild(li);});
+    app(con,lbl,ul);
+    tog.addEventListener('click',function(){
+      var open=con.classList.contains('open');
+      con.classList.toggle('open',!open);tog.classList.toggle('open',!open);
+    });
+    app(su,tog,con);app(body,su);
+  });
+
+  var sep=el('div');sep.style.cssText='height:1px;background:rgba(255,255,255,0.06);';
+  app(body,sep);
+
+  var vs=el('div','vocab-sec');
+  var vl=el('div','content-section-label');st(vl,'Vocabulary \u2014 '+unit.vocab.length+' terms');
+  var vg=el('div','vocab-grid');
+  unit.vocab.forEach(function(pair){
+    var item=el('div','vocab-item');
+    var tm=el('div','vocab-term');st(tm,pair[0]);
+    var df=el('div','vocab-def');st(df,pair[1]);
+    app(item,tm,df);app(vg,item);
+  });
+  app(vs,vl,vg);app(body,vs);
+  app(card,body);app(area,card);
+}
+
+/* ══════════════════════════════════════════
+   FLASHCARDS
+══════════════════════════════════════════ */
+var FC={deck:[],idx:0,flipped:false,uid:0};
+
+function allVocab(){var r=[];CUR.forEach(function(u){u.vocab.forEach(function(p){r.push({term:p[0],def:p[1]});});});return r;}
+function unitVocab(i){return i===0?allVocab():CUR[i-1].vocab.map(function(p){return{term:p[0],def:p[1]};});}
+
+function buildFC(){
+  var dd=document.getElementById('fcUnitDropdown');
+  var ao=document.createElement('option');ao.value='0';st(ao,'All Units');dd.appendChild(ao);
+  CUR.forEach(function(u,i){var o=document.createElement('option');o.value=String(i+1);st(o,'Unit '+u.id+': '+u.title);dd.appendChild(o);});
+  dd.addEventListener('change',function(){FC.uid=parseInt(dd.value,10);loadFC(FC.uid);});
+  document.getElementById('fcCard').addEventListener('click',flipFC);
+  document.getElementById('fcCard').addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();flipFC();}});
+  document.getElementById('fcFlipBtn').addEventListener('click',flipFC);
+  document.getElementById('fcPrev').addEventListener('click',function(){moveFC(-1);});
+  document.getElementById('fcNext').addEventListener('click',function(){moveFC(1);});
+  document.getElementById('fcShuffle').addEventListener('click',function(){FC.deck=shuffle(FC.deck);FC.idx=0;renderFC();});
+  document.getElementById('fcReset').addEventListener('click',function(){loadFC(FC.uid);});
+  loadFC(0);
+}
+
+function loadFC(uid){FC.deck=unitVocab(uid);FC.idx=0;FC.flipped=false;document.getElementById('fcCard').classList.remove('flipped');renderFC();}
+function flipFC(){FC.flipped=!FC.flipped;document.getElementById('fcCard').classList.toggle('flipped',FC.flipped);}
+function moveFC(d){var l=FC.deck.length;if(!l)return;FC.idx=(FC.idx+d+l)%l;FC.flipped=false;document.getElementById('fcCard').classList.remove('flipped');renderFC();}
+
+function renderFC(){
+  var deck=FC.deck,idx=FC.idx;
+  st(document.getElementById('fcInfo'),'Card '+(deck.length?idx+1:0)+' of '+deck.length);
+  if(!deck.length){st(document.getElementById('fcTerm'),'(No terms)');st(document.getElementById('fcDef'),'');return;}
+  st(document.getElementById('fcTerm'),deck[idx].term);
+  st(document.getElementById('fcDef'),deck[idx].def);
+  var dots=document.getElementById('fcDots');clr(dots);
+  var max=Math.min(deck.length,60);
+  for(var i=0;i<max;i++){
+    var d=el('div','fc-dot');
+    if(i<idx)d.classList.add('seen');
+    if(i===idx)d.classList.add('current');
+    app(dots,d);
+  }
+  if(deck.length>60){var more=el('span');more.style.cssText='font-size:10px;color:#282620;font-family:monospace;align-self:center;';st(more,'+'+(deck.length-60)+' more');app(dots,more);}
+}
+
+/* ══════════════════════════════════════════
+   TABS
+══════════════════════════════════════════ */
+document.querySelectorAll('.tab-btn').forEach(function(b){
+  b.addEventListener('click',function(){
+    var id=b.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active');x.setAttribute('aria-selected','false');});
+    document.querySelectorAll('.tab-panel').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');b.setAttribute('aria-selected','true');
+    document.getElementById('panel-'+id).classList.add('active');
+  });
+});
+
+/* ══════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════ */
+buildFilter();initQ(0);
+buildRef();
+buildFC();
+
+})();
+</script>
+</body>
+</html>
